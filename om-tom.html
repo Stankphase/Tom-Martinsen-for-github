@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Om Tom — Tom Martinsen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #f8f6f3;
+      --text:   #111;
+      --muted:  #b0ab9e;
+      --border: #e2ddd7;
+      --sans:   'Albert Sans', sans-serif;
+      --serif:  'Cormorant Garamond', serif;
+    }
+
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      animation: pageFadeIn 0.35s ease both;
+    }
+    body.page-exit { opacity: 0; transition: opacity 0.25s ease; }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      padding: 36px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+    }
+
+    .logo {
+      display: block;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 80px;
+      width: auto;
+      display: block;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-nav { display: flex; gap: 36px; }
+    .header-nav a {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a8277;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .header-nav a:hover, .header-nav a.active { color: var(--text); }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      z-index: 51;
+    }
+    .lang-toggle span, .lang-toggle a {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .lang-active { color: var(--text); }
+    .lang-sep    { color: var(--border); }
+    .lang-link   { color: var(--muted); }
+    .lang-link:hover { color: var(--text); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 51;
+      position: relative;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── Bio intro (full width) ── */
+    .bio-intro {
+      padding: 140px 56px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .page-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .page-title em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .bio-text {
+      color: #6a6560;
+      font-size: 13px;
+      line-height: 1.9;
+      margin-top: 2rem;
+    }
+
+    .bio-portrait img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── CV content (narrow) ── */
+    .cv-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 56px 100px;
+    }
+
+    /* ── CV sections ── */
+    .cv-section {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+    }
+
+    .cv-heading {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .cv-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+
+    .cv-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0 1.5rem;
+    }
+    .cv-item--no-year {
+      grid-template-columns: 1fr;
+    }
+
+    .cv-year {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: #8a8277;
+      padding-top: 1px;
+    }
+
+    .cv-body {}
+
+    .cv-title {
+      display: block;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .cv-desc {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy { font-size: 10px; letter-spacing: 0.1em; color: #ccc8c0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 20px 24px; }
+      .logo img { height: 68px; }
+      .nav-hamburger { display: flex; }
+      .header-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        z-index: 50;
+      }
+      .header-nav.open { display: flex; }
+      .header-nav a { font-size: 13px; color: var(--text); letter-spacing: 0.22em; }
+      .bio-intro {
+        grid-template-columns: 1fr;
+        padding: 110px 24px 48px;
+        gap: 36px;
+      }
+      .bio-portrait { order: -1; }
+      .cv-wrap { padding: 0 24px 64px; }
+      footer { padding: 20px 24px; }
+      .cv-item { grid-template-columns: 60px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Tom Martinsen"></a>
+    <div class="header-right">
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Meny">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="header-nav" id="header-nav">
+        <a href="index.html#galleri">Galleri</a>
+        <a href="om-tom.html" class="active">Om Tom</a>
+        <a href="index.html#kontakt">Kontakt</a>
+      </nav>
+      <div class="lang-toggle">
+        <span class="lang-active">NO</span>
+        <span class="lang-sep">/</span>
+        <a href="om-tom-en.html" class="lang-link">EN</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="bio-intro">
+    <div class="bio-left">
+      <span class="page-eyebrow">Biografi</span>
+      <h1 class="page-title">Tom Martinsen<br><em>1943–2007</em></h1>
+      <p class="bio-text">
+        Tom Martinsen ble født 4. august 1943 i Tønsberg. Han studerte ved Foto- og dokumentärskolan ved Stockholms universitet fra 1968 til 1971, under den svenske fotografen Christer Strömholm. Fra 1972 arbeidet han som pressefotograf for Dagbladet, og fanget tiår med norsk og internasjonal historie gjennom linsen. I 1977 var han med å grunnlegge Fotogalleriet i Oslo.
+      </p>
+    </div>
+    <div class="bio-portrait">
+      <img src="images/Tom-Martinsen-portrett.jpg" alt="Tom Martinsen">
+    </div>
+  </div>
+
+  <div class="cv-wrap">
+
+    <!-- I samlingene -->
+    <section class="cv-section">
+      <span class="cv-heading">I samlingene</span>
+      <ul class="cv-list">
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Henie Onstad Kunstsenter</span></li>
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Moderna museet, Stockholm</span></li>
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Møllersamlingen</span></li>
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Norsk Kulturråd</span></li>
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Bærum Kommune</span></li>
+        <li class="cv-item cv-item--no-year"><span class="cv-title">Norsk Museum for Fotografi, Preus Fotomuseum</span></li>
+      </ul>
+    </section>
+
+    <!-- Utstillinger -->
+    <section class="cv-section">
+      <span class="cv-heading">Utstillinger</span>
+      <ul class="cv-list">
+        <li class="cv-item">
+          <span class="cv-year">2012</span>
+          <div class="cv-body"><span class="cv-title">Fotografier, Fotografiens hus, Oslo</span><span class="cv-desc">Boklansering.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2006</span>
+          <div class="cv-body"><span class="cv-title">Nord for havets ende, Preus Fotomuseum, Horten</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2005</span>
+          <div class="cv-body"><span class="cv-title">Separatutstilling, Kunstforeningen, Verdens Ende, Tjøme</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2003</span>
+          <div class="cv-body"><span class="cv-title">Separatutstilling, Lillehammer kunstmuseum</span><span class="cv-desc">Sammen med Rolf Aagaard.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1994</span>
+          <div class="cv-body"><span class="cv-title">Vest – en veifortelling, Fotogalleriet, Oslo</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1994</span>
+          <div class="cv-body"><span class="cv-title">Min egen road movie, Filmfestivalen, Haugesund</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1984</span>
+          <div class="cv-body"><span class="cv-title">India Fine Arts &amp; Crafts Society, Photography Exhibition, New Delhi</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1982</span>
+          <div class="cv-body"><span class="cv-title">Galleri Camera Obscura, Stockholm</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1980</span>
+          <div class="cv-body"><span class="cv-title">Bilder fra Verdens Ende, Fotogalleriet, Oslo</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1979</span>
+          <div class="cv-body"><span class="cv-title">Statens Kunstutstilling, Oslo</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1978</span>
+          <div class="cv-body"><span class="cv-title">Norsk fotografi, Moderna Museet, Stockholm</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Priser og utmerkelser -->
+    <section class="cv-section">
+      <span class="cv-heading">Priser og utmerkelser</span>
+      <ul class="cv-list">
+        <li class="cv-item">
+          <span class="cv-year">2006</span>
+          <div class="cv-body"><span class="cv-title">Fritt Ords honnørpris</span><span class="cv-desc">For hans unike bidrag til utvikling og formidling av norsk fotografi i flere sjangrer: presse-, dokumentar- og kunstfoto.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2004</span>
+          <div class="cv-body"><span class="cv-title">«Snill gutt-statuetten»</span><span class="cv-desc">Pressefotografenes egen pris.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2001</span>
+          <div class="cv-body"><span class="cv-title">Æresmedlem, Pressefotografenes Klubb</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">1972</span>
+          <div class="cv-body"><span class="cv-title">Årets Bilde, Norsk Pressefotografers Klubb</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Bøker -->
+    <section class="cv-section">
+      <span class="cv-heading">Bøker</span>
+      <ul class="cv-list">
+        <li class="cv-item">
+          <span class="cv-year">2012</span>
+          <div class="cv-body"><span class="cv-title"><em>Tom Martinsen – Fotografier</em></span><span class="cv-desc">Font forlag.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year">2004</span>
+          <div class="cv-body"><span class="cv-title"><em>118 øyeblikk</em></span><span class="cv-desc">Norske reportasjefotografer utvalgt og presentert av Tom Martinsen. Dinamo forlag.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Presse -->
+    <section class="cv-section">
+      <span class="cv-heading">Presse</span>
+      <ul class="cv-list">
+        <li class="cv-item">
+          <span class="cv-year">1972–2007</span>
+          <div class="cv-body"><span class="cv-title">Dagbladet</span><span class="cv-desc">Pressefotograf i over tre tiår.</span></div>
+        </li>
+        <li class="cv-item">
+          <span class="cv-year"></span>
+          <div class="cv-body"><span class="cv-title">«Øyeblikket», Dagbladets magasin</span><span class="cv-desc">Fast spalte om pressefoto og kunstfotografi.</span></div>
+        </li>
+      </ul>
+    </section>
+
+  </div><!-- /cv-wrap -->
+
+  <script>
+    const hamburger = document.getElementById('nav-hamburger');
+    const headerNav = document.getElementById('header-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      headerNav.classList.toggle('open');
+    });
+    headerNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      headerNav.classList.remove('open');
+    }));
+
+    // Page transitions
+    if (sessionStorage.getItem('langSwitch')) {
+      document.body.style.animation = 'none';
+      sessionStorage.removeItem('langSwitch');
+    }
+    document.querySelectorAll('a[href]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        if (a.classList.contains('lang-link')) {
+          sessionStorage.setItem('langSwitch', '1');
+          location.href = href;
+          return;
+        }
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(() => { location.href = href; }, 250);
+      });
+    });
+  </script>
+
+  <footer>
+    <span class="footer-copy">© 2025 Tom Martinsen Estate. Alle rettigheter forbeholdt.</span>
+  </footer>
+
+</body>
+</html>

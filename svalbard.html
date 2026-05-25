@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Svalbard — Tom Martinsen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;1,300&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+  <script src="gallery-data.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; height: 100dvh; }
+
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    body {
+      background: #f8f6f3;
+      font-family: 'Albert Sans', sans-serif;
+      font-weight: 300;
+      overflow: hidden;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      animation: pageFadeIn 0.35s ease both;
+    }
+    body.page-exit { opacity: 0; transition: opacity 0.25s ease; }
+
+    header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .back {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a8277;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .back:hover { color: #111; }
+
+    .series-info { text-align: right; }
+
+    .series-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 300;
+      font-style: italic;
+      color: #111;
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    .series-counter {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #8a8277;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .viewer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: e-resize;
+      padding: 72px 48px 48px;
+      gap: 1.25rem;
+    }
+
+    .viewer img {
+      max-width: 90%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .viewer img.loaded { opacity: 1; }
+
+    .img-title {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: #8a8277;
+      text-align: center;
+    }
+
+    .viewer { position: relative; }
+
+    .buy-link {
+      position: fixed;
+      bottom: 28px;
+      right: 48px;
+      z-index: 100;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #c8c4bc;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .buy-link:hover { color: #111; }
+
+
+    @media (max-width: 600px) {
+      header { padding: 20px 24px; }
+      .back { font-size: 10px; }
+      .series-title { font-size: 13px; }
+      .series-counter { font-size: 10px; }
+      .img-title { font-size: 10px; }
+      .viewer { padding: 72px 16px 48px; }
+      .viewer img { max-height: 76dvh; max-height: 76vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back">&larr; Alle gallerier</a>
+    <div class="series-info">
+      <span class="series-title">Svalbard</span>
+      <span class="series-counter" id="counter"></span>
+    </div>
+  </header>
+
+  <div class="viewer" id="viewer">
+    <img id="img" src="" alt="">
+    <div class="img-title" id="img-title"></div>
+    <a href="kjop.html" class="buy-link" id="buy-link">Kj&#248;p</a>
+  </div>
+
+  <script>
+    const BASE   = 'images/svalbard/';
+    const images = GALLERY.svalbard;
+    const el      = document.getElementById('img');
+    const title   = document.getElementById('img-title');
+    const counter = document.getElementById('counter');
+    const buyLink = document.getElementById('buy-link');
+    let current   = 0;
+
+    function show(idx, instant = false) {
+      current = (idx + images.length) % images.length;
+      el.classList.remove('loaded');
+      const src = BASE + images[current].file.split('/').map(encodeURIComponent).join('/');
+      setTimeout(() => {
+        const next = new Image();
+        next.src = src;
+        next.onload = () => { el.src = src; el.classList.add('loaded'); };
+        title.textContent   = images[current].title;
+        counter.textContent = (current + 1) + ' — ' + images.length;
+        buyLink.href = 'kjop.html?img=' + encodeURIComponent(src) + '&title=' + encodeURIComponent(images[current].title);
+      }, instant ? 0 : 250);
+    }
+
+    show(0, true);
+    // Navigation: click anywhere except header/links
+    window.addEventListener('click', e => {
+      if (e.target.closest('a') || e.target.closest('header')) return;
+      e.clientX < window.innerWidth / 2 ? show(current - 1) : show(current + 1);
+    });
+    // Cursor changes based on mouse position
+    document.getElementById('viewer').addEventListener('mousemove', e => {
+      const v = document.getElementById('viewer');
+      v.style.cursor = e.clientX < window.innerWidth / 2 ? 'w-resize' : 'e-resize';
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+      if (e.key === 'Escape') {
+        document.body.classList.add('page-exit');
+        setTimeout(() => { location.href = 'index.html'; }, 250);
+      }
+    });
+
+    document.querySelectorAll('a[href]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(() => { location.href = href; }, 250);
+      });
+    });
+
+    let tx = 0;
+    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 50) show(d > 0 ? current + 1 : current - 1);
+    });
+  </script>
+
+</body>
+</html>

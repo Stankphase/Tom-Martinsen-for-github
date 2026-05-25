@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tom Martinsen — Photographer</title>
+  <meta name="description" content="Official gallery for Tom Martinsen's photographs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="gallery-data.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #f8f6f3;
+      --text:   #111;
+      --muted:  #b0ab9e;
+      --border: #e2ddd7;
+      --sans:   'Albert Sans', sans-serif;
+      --serif:  'Cormorant Garamond', serif;
+    }
+
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      animation: pageFadeIn 0.35s ease both;
+    }
+    body.page-exit { opacity: 0; transition: opacity 0.25s ease; }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      padding: 36px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: block;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 80px;
+      width: auto;
+      display: block;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-nav { display: flex; gap: 36px; }
+    .header-nav a {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a8277;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      z-index: 51;
+    }
+    .lang-toggle span, .lang-toggle a {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .lang-active { color: var(--text); }
+    .lang-sep    { color: var(--border); }
+    .lang-link   { color: var(--muted); }
+    .lang-link:hover { color: var(--text); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 51;
+      position: relative;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 120px 56px 80px;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-bio {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(52px, 6vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+    }
+
+    .hero-years {
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.5vw, 36px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .hero-text {
+      font-size: 13px;
+      color: #6a6560;
+      line-height: 1.9;
+      max-width: 380px;
+      margin-top: 0.5rem;
+    }
+
+    .hero-link {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s;
+      margin-top: 0.25rem;
+    }
+    .hero-link:hover { color: var(--text); }
+
+    .hero-image-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .hero-image-wrap img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 78vh;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    .hero-image-wrap img.loaded { opacity: 1; }
+
+    .hero-caption {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Gallery list ── */
+    .gallery-section {
+      padding: 0 56px 100px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 28px 0 20px;
+      display: block;
+    }
+
+    .project-list { list-style: none; }
+    .project-item { border-top: 1px solid var(--border); }
+    .project-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .project-link {
+      display: flex;
+      align-items: baseline;
+      padding: 20px 0;
+      text-decoration: none;
+    }
+
+    .project-name {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4vw, 56px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      flex: 1;
+      line-height: 1.1;
+      transition: color 0.3s;
+    }
+    .project-link:hover .project-name { color: var(--muted); }
+
+    /* ── Hero image clickable ── */
+    .hero-image-inner {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+      max-width: 100%;
+      cursor: pointer;
+    }
+
+    .hero-img-box {
+      position: relative;
+      display: block;
+      line-height: 0;
+    }
+    .hero-img-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.35s ease;
+      pointer-events: none;
+    }
+    .hero-image-inner:hover .hero-img-box::after { background: rgba(0,0,0,0.07); }
+
+    /* ── Fullscreen modal ── */
+    #hero-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #f8f6f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #hero-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #hero-modal-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    #hero-modal-inner img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .modal-close {
+      position: fixed;
+      top: 28px;
+      right: 40px;
+      background: none;
+      border: none;
+      color: #b0ab9e;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 101;
+      line-height: 1;
+      transition: color 0.2s;
+      padding: 0;
+    }
+    .modal-close:hover { color: #111; }
+    .modal-buy {
+      position: fixed;
+      bottom: 32px;
+      right: 48px;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #c8c4bc;
+      text-decoration: none;
+      transition: color 0.25s;
+      z-index: 101;
+    }
+    .modal-buy:hover { color: #111; }
+    .modal-caption {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: #b0ab9e;
+      text-align: center;
+    }
+
+    /* ── Contact ── */
+    #contact {
+      padding: 80px 56px;
+      border-top: 1px solid var(--border);
+      max-width: 576px;
+    }
+
+    .contact-label {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 22px;
+    }
+
+    .contact-heading {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .contact-body {
+      color: #8a8277;
+      font-size: 13px;
+      line-height: 1.75;
+      margin-bottom: 36px;
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 26px; }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+
+    label {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input, textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #dedad4;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      padding: 10px 0;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+      caret-color: #999;
+    }
+    input:focus, textarea:focus { border-bottom-color: #8a8277; }
+    textarea { resize: none; height: 96px; }
+    input::placeholder, textarea::placeholder { color: #d0cdc7; }
+
+    .submit-btn {
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid #d0cdc7;
+      color: #8a8277;
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 13px 36px;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .submit-btn:hover { border-color: #8a8277; color: var(--text); }
+
+    .form-success {
+      display: none;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy { font-size: 10px; letter-spacing: 0.1em; color: #ccc8c0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 20px 24px; }
+      .logo img { height: 68px; }
+      .nav-hamburger { display: flex; }
+      .header-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        z-index: 50;
+      }
+      .header-nav.open { display: flex; }
+      .header-nav a {
+        font-size: 13px;
+        color: var(--text);
+        letter-spacing: 0.22em;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 88px 24px 60px;
+        gap: 48px;
+        min-height: unset;
+      }
+      .hero-image-wrap {
+        align-items: center;
+      }
+      .hero-image-wrap img {
+        max-height: 52vh;
+        object-position: center top;
+      }
+
+      .gallery-section { padding: 0 24px 64px; }
+      #contact { padding: 48px 24px; max-width: 100%; }
+      footer { padding: 20px 24px; }
+      input, textarea { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index-en.html" class="logo"><img src="images/logo.png" alt="Tom Martinsen"></a>
+    <div class="header-right">
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="header-nav" id="header-nav">
+        <a href="#gallery">Gallery</a>
+        <a href="om-tom-en.html">About Tom</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="lang-toggle">
+        <a href="index.html" class="lang-link">NO</a>
+        <span class="lang-sep">/</span>
+        <span class="lang-active">EN</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bio">
+      <span class="hero-eyebrow">Official gallery</span>
+      <div>
+        <div class="hero-name">Tom<br>Martinsen</div>
+        <div class="hero-years">Photographer</div>
+      </div>
+      <p class="hero-text">
+        Press photographer and artist with over three decades at Dagbladet, recipient of the Fritt Ord Honorary Award and represented in collections at Henie Onstad Kunstsenter and Moderna Museet in Stockholm, among others.
+      </p>
+      <a href="om-tom-en.html" class="hero-link">About Tom →</a>
+    </div>
+    <div class="hero-image-wrap" id="hero-wrap">
+      <div class="hero-image-inner" id="hero-inner">
+        <div class="hero-img-box">
+          <img id="hero-img" src="" alt="">
+        </div>
+        <span class="hero-caption" id="hero-caption"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fullscreen modal -->
+  <div id="hero-modal">
+    <button class="modal-close" id="modal-close">×</button>
+    <div id="hero-modal-inner">
+      <img id="modal-img" src="" alt="">
+      <div class="modal-caption" id="modal-caption"></div>
+    </div>
+    <a href="kjop-en.html" class="modal-buy">Buy</a>
+  </div>
+
+  <!-- Gallery list -->
+  <section class="gallery-section" id="gallery">
+    <span class="section-label">Gallery</span>
+    <ul class="project-list">
+      <li class="project-item">
+        <a href="on-the-road-en.html" class="project-link">
+          <span class="project-name">On the Road</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="haiku-en.html" class="project-link">
+          <span class="project-name">Haiku</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="verdens-ende-en.html" class="project-link">
+          <span class="project-name">Bilder fra Verdens Ende</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="innside-en.html" class="project-link">
+          <span class="project-name">Innside</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="svalbard-en.html" class="project-link">
+          <span class="project-name">Svalbard</span>
+        </a>
+      </li>
+      <li class="project-item">
+        <a href="portretter-en.html" class="project-link">
+          <span class="project-name">Portraits</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <span class="contact-label">Contact</span>
+    <h2 class="contact-heading">For enquiries about purchases<br>or availability.</h2>
+    <p class="contact-body">We usually respond within 1–2 working days.</p>
+    <form class="contact-form" id="contact-form">
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="form-field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell us what you are interested in…" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send message</button>
+      <p class="form-success" id="form-success">Message received — we will be in touch shortly.</p>
+    </form>
+  </section>
+
+  <footer>
+    <span class="footer-copy">© 2025 Tom Martinsen Estate. All rights reserved.</span>
+  </footer>
+
+  <script>
+    const BASE = 'images/';
+
+    function imgSrc(folder, file) {
+      return BASE + folder + '/' + file.split('/').map(encodeURIComponent).join('/');
+    }
+
+    // Random hero image from featured list
+    const all = GALLERY.featured;
+    const stored = sessionStorage.getItem('langSwitchImage');
+    const pick = stored ? JSON.parse(stored) : all[Math.floor(Math.random() * all.length)];
+    sessionStorage.removeItem('langSwitchImage');
+    if (stored) document.body.style.animation = 'none';
+    const heroImg = document.getElementById('hero-img');
+    const pre = new Image();
+    pre.src = imgSrc(pick.folder, pick.file);
+    pre.onload = () => { heroImg.src = pre.src; heroImg.classList.add('loaded'); };
+    document.getElementById('hero-caption').textContent = pick.title;
+
+    // Fullscreen modal
+    const heroModal    = document.getElementById('hero-modal');
+    const modalImg     = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+
+    function openModal() {
+      modalImg.src = heroImg.src;
+      modalCaption.textContent = pick.title;
+      document.querySelector('.modal-buy').href = 'kjop-en.html?img=' + encodeURIComponent(heroImg.src) + '&title=' + encodeURIComponent(pick.title);
+      heroModal.classList.add('open');
+    }
+    function closeModal() {
+      heroModal.classList.remove('open');
+    }
+
+    document.getElementById('hero-inner').addEventListener('click', openModal);
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    heroModal.addEventListener('click', e => {
+      if (!document.getElementById('hero-modal-inner').contains(e.target)
+          && e.target !== document.getElementById('modal-close')
+          && !e.target.closest('.modal-buy')) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('nav-hamburger');
+    const headerNav = document.getElementById('header-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      headerNav.classList.toggle('open');
+    });
+    headerNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      headerNav.classList.remove('open');
+    }));
+
+    // Page transitions
+    document.querySelectorAll('a[href]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        if (a.classList.contains('lang-link')) {
+          sessionStorage.setItem('langSwitchImage', JSON.stringify(pick));
+          location.href = href;
+          return;
+        }
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(() => { location.href = href; }, 250);
+      });
+    });
+
+    // Contact form
+    document.getElementById('contact-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.submit-btn');
+      const msg = document.getElementById('form-success');
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+      setTimeout(() => { e.target.reset(); btn.style.display = ''; msg.style.display = 'none'; }, 4000);
+    });
+  </script>
+
+</body>
+</html>

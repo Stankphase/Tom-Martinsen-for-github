@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kjøp trykk — Tom Martinsen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #f8f6f3;
+      --text:   #111;
+      --muted:  #b0ab9e;
+      --border: #e2ddd7;
+      --sans:   'Albert Sans', sans-serif;
+      --serif:  'Cormorant Garamond', serif;
+    }
+
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      animation: pageFadeIn 0.35s ease both;
+    }
+    body.page-exit { opacity: 0; transition: opacity 0.25s ease; }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      padding: 36px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+    }
+
+    .logo { display: block; text-decoration: none; }
+    .logo img { height: 80px; width: auto; display: block; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-nav { display: flex; gap: 36px; }
+    .header-nav a {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a8277;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .header-nav a:hover { color: var(--text); }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+      z-index: 51;
+    }
+    .lang-toggle span, .lang-toggle a {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .lang-active { color: var(--text); }
+    .lang-sep    { color: var(--border); }
+    .lang-link   { color: var(--muted); }
+    .lang-link:hover { color: var(--text); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 51;
+      position: relative;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── Content ── */
+    .page-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 180px 56px 100px;
+    }
+
+    .page-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #8a8277;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 4vw, 60px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+
+    .page-body {
+      color: #6a6560;
+      font-size: 13px;
+      line-height: 1.9;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Sizes ── */
+    .sizes {
+      border-top: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .size-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .size-label {
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    .size-price {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    /* ── Print info ── */
+    .print-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 3rem;
+    }
+
+    .print-info span {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: #8a8277;
+    }
+
+    /* ── Form ── */
+    .form-label {
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #8a8277;
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 26px; }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+
+    label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #8a8277;
+    }
+
+    input, textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #dedad4;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      padding: 10px 0;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+      caret-color: #999;
+    }
+    input:focus, textarea:focus { border-bottom-color: #8a8277; }
+    textarea { resize: none; height: 96px; }
+    input::placeholder, textarea::placeholder { color: #d0cdc7; }
+
+    .submit-btn {
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid #d0cdc7;
+      color: #8a8277;
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 13px 36px;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .submit-btn:hover { border-color: #8a8277; color: var(--text); }
+
+    /* ── Valgt bilde ── */
+    .selected-image {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .selected-image img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+      flex-shrink: 0;
+    }
+    .selected-image-title {
+      font-size: 12px;
+      color: #6a6560;
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+    }
+    .selected-image-label {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-note {
+      font-size: 11px;
+      color: #b0ab9e;
+      line-height: 1.7;
+    }
+
+    .form-success {
+      display: none;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy { font-size: 10px; letter-spacing: 0.1em; color: #ccc8c0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 20px 24px; }
+      .logo img { height: 68px; }
+      .nav-hamburger { display: flex; }
+      .header-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        z-index: 50;
+      }
+      .header-nav.open { display: flex; }
+      .header-nav a { font-size: 13px; color: var(--text); letter-spacing: 0.22em; }
+      .page-eyebrow { font-size: 9px; }
+      label { font-size: 9px; }
+      .form-label { font-size: 9px; }
+      .page-wrap { padding: 140px 24px 64px; }
+      footer { padding: 20px 24px; }
+      input, textarea { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Tom Martinsen"></a>
+    <div class="header-right">
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Meny">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="header-nav" id="header-nav">
+        <a href="index.html#galleri">Galleri</a>
+        <a href="om-tom.html">Om Tom</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <div class="lang-toggle">
+        <span class="lang-active">NO</span>
+        <span class="lang-sep">/</span>
+        <a href="kjop-en.html" class="lang-link">EN</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-wrap">
+
+    <span class="page-eyebrow">Kunsttrykk</span>
+    <h1 class="page-title">Kjøp trykk</h1>
+
+    <div class="selected-image" id="selected-image" style="display:none;">
+      <img id="selected-img" src="" alt="">
+      <div>
+        <span class="selected-image-label">Valgt bilde</span>
+        <span class="selected-image-title" id="selected-title"></span>
+      </div>
+    </div>
+
+    <p class="page-body">
+      Alle trykk produseres på bestilling og leveres med autentisitetssertifikat utstedt av Tom Martinsen Estate. Vi svarer normalt innen 1–2 virkedager.
+    </p>
+
+    <div class="sizes">
+      <div class="size-row">
+        <span class="size-label">30 × 40 cm</span>
+        <span class="size-price">kr 8 000</span>
+      </div>
+      <div class="size-row">
+        <span class="size-label">50 × 70 cm</span>
+        <span class="size-price">kr 15 000</span>
+      </div>
+      <div class="size-row">
+        <span class="size-label">70 × 100 cm</span>
+        <span class="size-price">kr 20 000</span>
+      </div>
+    </div>
+
+    <div class="print-info">
+      <span>Giclée-trykk på arkivkvalitetspapir</span>
+      <span>Opplag: 25 eksemplarer per størrelse <em>(bekreftes av estate)</em></span>
+      <span>Levering innen 3–5 virkedager</span>
+    </div>
+
+    <span class="form-label" id="kontakt">Send forespørsel</span>
+
+    <form class="contact-form" id="purchase-form">
+      <div class="form-field">
+        <label for="name">Navn</label>
+        <input type="text" id="name" name="name" placeholder="Ditt navn" required>
+      </div>
+      <div class="form-field">
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" placeholder="din@epost.no" required>
+      </div>
+      <div class="form-field">
+        <label for="message">Melding</label>
+        <textarea id="message" name="message" placeholder="Hvilket bilde og hvilken størrelse er du interessert i?" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send forespørsel</button>
+      <p class="form-success" id="form-success">Melding mottatt — vi tar kontakt snart.</p>
+      <p class="form-note">Vi sender bekreftelse og faktura per e-post.</p>
+    </form>
+
+  </div>
+
+  <footer>
+    <span class="footer-copy">© 2025 Tom Martinsen Estate. Alle rettigheter forbeholdt.</span>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('nav-hamburger');
+    const headerNav = document.getElementById('header-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      headerNav.classList.toggle('open');
+    });
+    headerNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      headerNav.classList.remove('open');
+    }));
+
+    // Page transitions
+    if (sessionStorage.getItem('langSwitch')) {
+      document.body.style.animation = 'none';
+      sessionStorage.removeItem('langSwitch');
+    }
+    document.querySelectorAll('a[href]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        if (a.classList.contains('lang-link')) {
+          sessionStorage.setItem('langSwitch', '1');
+          location.href = href;
+          return;
+        }
+        sessionStorage.removeItem('kjopImg');
+        sessionStorage.removeItem('kjopTitle');
+        e.preventDefault();
+        document.body.classList.add('page-exit');
+        setTimeout(() => { location.href = href; }, 250);
+      });
+    });
+
+    // Vis valgt bilde fra URL-parameter eller språkbytte
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('img')) {
+      sessionStorage.setItem('kjopImg',   params.get('img'));
+      sessionStorage.setItem('kjopTitle', params.get('title') || '');
+    }
+    const imgSrc   = params.get('img')   || sessionStorage.getItem('kjopImg');
+    const imgTitle = params.get('title') || sessionStorage.getItem('kjopTitle') || '';
+    if (imgSrc) {
+      document.getElementById('selected-img').src = imgSrc;
+      document.getElementById('selected-title').textContent = imgTitle || '';
+      document.getElementById('selected-image').style.display = 'flex';
+      const msgField = document.getElementById('message');
+      if (imgTitle) msgField.placeholder = 'Jeg er interessert i «' + imgTitle + '». Størrelse: …';
+    }
+
+    document.getElementById('purchase-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.submit-btn');
+      const msg = document.getElementById('form-success');
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+      setTimeout(() => { e.target.reset(); btn.style.display = ''; msg.style.display = 'none'; }, 4000);
+    });
+  </script>
+
+</body>
+</html>
