@@ -159,6 +159,42 @@
       display: block;
     }
 
+    /* ── Personlig portrett ── */
+    .personal {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 10px 56px 90px;
+    }
+    .personal-label {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 1.75rem;
+    }
+    .personal p {
+      font-size: 14px;
+      line-height: 2.0;
+      color: #5a554f;
+      margin-bottom: 1.4rem;
+    }
+    .personal p:last-child { margin-bottom: 0; }
+    .personal .q {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--text);
+    }
+    .personal-sign {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: #8a8277;
+      margin-top: 2rem;
+      display: block;
+    }
+
     /* ── CV content (narrow) ── */
     .cv-wrap {
       max-width: 680px;
@@ -244,6 +280,7 @@
       }
       .header-nav.open { display: flex; }
       .header-nav a { font-size: 13px; color: var(--text); letter-spacing: 0.22em; }
+      .personal { padding: 0 24px 64px; }
       .bio-intro {
         grid-template-columns: 1fr;
         padding: 110px 24px 48px;
@@ -289,6 +326,14 @@
       <img src="images/Tom-Martinsen-portrett.jpg" alt="Tom Martinsen">
     </div>
   </div>
+
+  <section class="personal">
+    <span class="personal-label">Et personlig portrett</span>
+    <p>Toms bilder har påvirket flere generasjoner. Som pressefotograf i Dagbladet dekket han alt fra krig, nød og mord til bryllup, sirkus og hoppsport. Han var profesjonell, og et søkende menneske på jakt etter erkjennelsens mysterier, slik kunstnere egentlig er. I Dagbladets spalte ØYEBLIKK delte han med stor iver sin kunnskap og glede over fotografiske mesterverk. For fotografen Tom var kamera og objektiv et arbeidsredskap, men også en forlengelse av hans søkende jeg.</p>
+    <p>Han tok oss med til havet, til stein og strå. Han forsøkte å fravriste naturen dens hemmeligheter, og fanget lyset gjennom gråtonene i sine sort/hvite bilder. Drømmen om Amerika stakk dypt i hans generasjon, og den stakk også dypt i Toms fotokunst. Amerikansk kultur, gjerne av det opprørske slaget: beat-diktning og bebop-jazz, westernfilmer, noir-dramaer, indianerfortellinger, rock’n’roll — hele spekteret av kulturuttrykk som på en eller annen måte passer til betegnelsen cool.</p>
+    <p>Han siterte ofte et indiansk ordtak som ga gjenklang i ham: <span class="q">«If you don’t know where you are going, every road will take you there.»</span> Han sa også ofte, når han kom hjem etter en av sine mange reiser: <span class="q">«Å reise er å vaske øynene.»</span></p>
+    <span class="personal-sign">— Gry Martinsen</span>
+  </section>
 
   <div class="cv-wrap">
 
