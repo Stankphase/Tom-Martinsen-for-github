@@ -159,6 +159,42 @@
       display: block;
     }
 
+    /* ── Personal portrait ── */
+    .personal {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 10px 56px 90px;
+    }
+    .personal-label {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 1.75rem;
+    }
+    .personal p {
+      font-size: 14px;
+      line-height: 2.0;
+      color: #5a554f;
+      margin-bottom: 1.4rem;
+    }
+    .personal p:last-child { margin-bottom: 0; }
+    .personal .q {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--text);
+    }
+    .personal-sign {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: #8a8277;
+      margin-top: 2rem;
+      display: block;
+    }
+
     /* ── CV content (narrow) ── */
     .cv-wrap {
       max-width: 680px;
@@ -244,6 +280,7 @@
       }
       .header-nav.open { display: flex; }
       .header-nav a { font-size: 13px; color: var(--text); letter-spacing: 0.22em; }
+      .personal { padding: 0 24px 64px; }
       .bio-intro {
         grid-template-columns: 1fr;
         padding: 110px 24px 48px;
@@ -289,6 +326,14 @@
       <img src="images/Tom-Martinsen-portrett.jpg" alt="Tom Martinsen">
     </div>
   </div>
+
+  <section class="personal">
+    <span class="personal-label">A personal portrait</span>
+    <p>Tom’s photographs have shaped several generations. As a press photographer for Dagbladet, he covered everything from war, hardship and murder to weddings, the circus and ski jumping. He was a professional, and a searching soul in pursuit of the mysteries of knowing — as artists truly are. In Dagbladet’s column ØYEBLIKK (“The Moment”), he shared his knowledge and his delight in photographic masterpieces with great fervour. For Tom the photographer, camera and lens were tools of the trade, but also an extension of his searching self.</p>
+    <p>He took us to the sea, to stone and straw. He sought to wrest from nature its secrets, and caught the light through the grey tones of his black-and-white images. The dream of America ran deep in his generation, and it ran deep in Tom’s photographic art as well. American culture, preferably of the rebellious kind: beat poetry and bebop jazz, Westerns, noir dramas, Native American tales, rock’n’roll — the whole spectrum of cultural expression that, in one way or another, fits the word cool.</p>
+    <p>He often quoted a Native American proverb that resonated with him: <span class="q">«If you don’t know where you are going, every road will take you there.»</span> And when he came home from one of his many journeys, he would often say: <span class="q">«To travel is to wash one’s eyes.»</span></p>
+    <span class="personal-sign">— Gry Martinsen</span>
+  </section>
 
   <div class="cv-wrap">
 
