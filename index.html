@@ -586,6 +586,10 @@
     <h2 class="contact-heading">For spørsmål om kjøp<br>eller tilgjengelighet.</h2>
     <p class="contact-body">Vi svarer normalt innen 1–2 virkedager.</p>
     <form class="contact-form" id="contact-form">
+      <input type="hidden" name="access_key" value="ddcb0715-6f24-4ba7-bd7f-827a9a28dc65">
+      <input type="hidden" name="subject" value="Ny henvendelse fra tommartinsen.no">
+      <input type="hidden" name="from_name" value="tommartinsen.no">
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
       <div class="form-field">
         <label for="name">Navn</label>
         <input type="text" id="name" name="name" placeholder="Ditt navn" required>
@@ -685,13 +689,25 @@
     });
 
     // Contact form
-    document.getElementById('contact-form').addEventListener('submit', e => {
+    document.getElementById('contact-form').addEventListener('submit', async e => {
       e.preventDefault();
-      const btn = e.target.querySelector('.submit-btn');
+      const form = e.target;
+      const btn = form.querySelector('.submit-btn');
       const msg = document.getElementById('form-success');
-      btn.style.display = 'none';
-      msg.style.display = 'block';
-      setTimeout(() => { e.target.reset(); btn.style.display = ''; msg.style.display = 'none'; }, 4000);
+      btn.disabled = true;
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) });
+        const data = await res.json();
+        if (!data.success) throw new Error();
+        msg.textContent = 'Melding mottatt — vi tar kontakt snart.';
+        btn.style.display = 'none';
+        msg.style.display = 'block';
+        setTimeout(() => { form.reset(); btn.style.display = ''; btn.disabled = false; msg.style.display = 'none'; }, 4000);
+      } catch (err) {
+        msg.textContent = 'Noe gikk galt. Prøv igjen, eller send oss en e-post på post@tommartinsen.no.';
+        msg.style.display = 'block';
+        btn.disabled = false;
+      }
     });
   </script>
 
