@@ -201,7 +201,7 @@
       color: #8a8277;
     }
 
-    input, textarea {
+    input, textarea, select {
       background: transparent;
       border: none;
       border-bottom: 1px solid #dedad4;
@@ -215,7 +215,8 @@
       width: 100%;
       caret-color: #999;
     }
-    input:focus, textarea:focus { border-bottom-color: #8a8277; }
+    input:focus, textarea:focus, select:focus { border-bottom-color: #8a8277; }
+    select { cursor: pointer; border-radius: 0; }
     textarea { resize: none; height: 96px; }
     input::placeholder, textarea::placeholder { color: #d0cdc7; }
 
@@ -313,7 +314,7 @@
       .form-label { font-size: 9px; }
       .page-wrap { padding: 140px 24px 64px; }
       footer { padding: 20px 24px; }
-      input, textarea { font-size: 16px; }
+      input, textarea, select { font-size: 16px; }
     }
   </style>
 </head>
@@ -352,28 +353,29 @@
     </div>
 
     <p class="page-body">
-      All prints are produced to order and come with a certificate of authenticity issued by Tom Martinsen Estate. We usually respond within 1–2 working days.
+      All prints are produced to order and verified with Tom Martinsen's stamp. We usually respond within 1–2 working days.
     </p>
 
     <div class="sizes">
       <div class="size-row">
-        <span class="size-label">30 × 40 cm</span>
+        <span class="size-label">45 × 30 cm</span>
         <span class="size-price">On enquiry</span>
       </div>
       <div class="size-row">
-        <span class="size-label">50 × 70 cm</span>
+        <span class="size-label">60 × 40 cm</span>
         <span class="size-price">On enquiry</span>
       </div>
       <div class="size-row">
-        <span class="size-label">70 × 100 cm</span>
+        <span class="size-label">90 × 60 cm</span>
         <span class="size-price">On enquiry</span>
       </div>
     </div>
 
     <div class="print-info">
-      <span>Giclée print on archival quality paper</span>
-      <span>Limited edition — the number is not yet finalised</span>
-      <span>Delivery within 3–5 working days</span>
+      <span>Giclée print on fine art paper (matte or glossy)</span>
+      <span>Limited edition of 30, verified with Tom's stamp</span>
+      <span>All sizes include a 1 cm border for the passe-partout</span>
+      <span>Shipping NOK 99 — shipped within 3–5 working days</span>
     </div>
 
     <span class="form-label" id="contact">Send enquiry</span>
@@ -394,8 +396,29 @@
         <input type="email" id="email" name="email" placeholder="your@email.com" required>
       </div>
       <div class="form-field">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Which image and size are you interested in?" required></textarea>
+        <label for="size">Size</label>
+        <select id="size" name="Size" required>
+          <option value="" disabled selected>Select size</option>
+          <option value="45 × 30 cm">45 × 30 cm</option>
+          <option value="60 × 40 cm">60 × 40 cm</option>
+          <option value="90 × 60 cm">90 × 60 cm</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="finish">Finish</label>
+        <select id="finish" name="Finish" required>
+          <option value="" disabled selected>Select finish</option>
+          <option value="Fine art matte">Fine art matte</option>
+          <option value="Fine art glossy">Fine art glossy</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="address">Delivery address</label>
+        <textarea id="address" name="Delivery address" placeholder="Name, street, postcode and city" required></textarea>
+      </div>
+      <div class="form-field">
+        <label for="message">Message (optional)</label>
+        <textarea id="message" name="message" placeholder="Any requests or questions"></textarea>
       </div>
       <button type="submit" class="submit-btn">Send enquiry</button>
       <p class="form-success" id="form-success">Message received — we will be in touch shortly.</p>
@@ -405,7 +428,7 @@
   </div>
 
   <footer>
-    <span class="footer-copy">© 2026 Tom Martinsen Estate. All rights reserved.</span>
+    <span class="footer-copy">© 2026 The Tom Martinsen family. All rights reserved.</span>
   </footer>
 
   <script>
@@ -456,8 +479,6 @@
       document.getElementById('selected-image').style.display = 'flex';
       document.getElementById('field-bilde').value = imgTitle || '';
       document.getElementById('field-bilde-url').value = imgSrc;
-      const msgField = document.getElementById('message');
-      if (imgTitle) msgField.placeholder = 'I am interested in «' + imgTitle + '». Size: …';
     }
 
     document.getElementById('purchase-form').addEventListener('submit', async e => {
