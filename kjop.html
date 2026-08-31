@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="gallery-data.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -465,6 +466,38 @@
       });
     });
 
+    // Størrelser per bilde
+    const FOLDER_MAP = {
+      'on-the-road':  GALLERY.onTheRoad,
+      'haiku':        GALLERY.haiku,
+      'verdens-ende': GALLERY.verdensEnde,
+      'innside':      GALLERY.innside,
+      'svalbard':     GALLERY.svalbard,
+      'portretter':   GALLERY.portretter,
+      'featured':     GALLERY.featured,
+    };
+    function lookupSizes(path) {
+      try {
+        const parts = decodeURIComponent(path).split('?')[0].split('/').filter(Boolean);
+        const file = parts[parts.length - 1];
+        const folder = parts[parts.length - 2];
+        const arr = FOLDER_MAP[folder];
+        if (arr) {
+          const hit = arr.find(x => x.file === file);
+          if (hit && hit.sizes) return hit.sizes;
+        }
+      } catch (e) {}
+      return null;
+    }
+    function renderSizes(sizes) {
+      document.querySelector('.sizes').innerHTML = sizes.map(s =>
+        '<div class="size-row"><span class="size-label">' + s +
+        '</span><span class="size-price">Ved forespørsel</span></div>').join('');
+      document.getElementById('size').innerHTML =
+        '<option value="" disabled selected>Velg størrelse</option>' +
+        sizes.map(s => '<option value="' + s + '">' + s + '</option>').join('');
+    }
+
     // Vis valgt bilde fra URL-parameter eller språkbytte
     const params = new URLSearchParams(window.location.search);
     if (params.get('img')) {
@@ -479,6 +512,8 @@
       document.getElementById('selected-image').style.display = 'flex';
       document.getElementById('field-bilde').value = imgTitle || '';
       document.getElementById('field-bilde-url').value = imgSrc;
+      const sizes = lookupSizes(imgSrc);
+      if (sizes && sizes.length) renderSizes(sizes);
     }
 
     document.getElementById('purchase-form').addEventListener('submit', async e => {
