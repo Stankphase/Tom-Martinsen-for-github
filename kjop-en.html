@@ -359,15 +359,15 @@
     <div class="sizes">
       <div class="size-row">
         <span class="size-label">45 × 30 cm</span>
-        <span class="size-price">On enquiry</span>
+        <span class="size-price">NOK 6,000</span>
       </div>
       <div class="size-row">
         <span class="size-label">60 × 40 cm</span>
-        <span class="size-price">On enquiry</span>
+        <span class="size-price">NOK 13,000</span>
       </div>
       <div class="size-row">
         <span class="size-label">90 × 60 cm</span>
-        <span class="size-price">On enquiry</span>
+        <span class="size-price">NOK 20,000</span>
       </div>
     </div>
 
@@ -376,6 +376,7 @@
       <span>Limited edition of 30, verified with Tom's stamp</span>
       <span>All sizes include a 1 cm border for the passe-partout</span>
       <span>Shipping NOK 99 — shipped within 3–5 working days</span>
+      <span>Prices apply to sales to private individuals. For businesses and licensing, please get in touch.</span>
     </div>
 
     <span class="form-label" id="contact">Send enquiry</span>
@@ -399,9 +400,9 @@
         <label for="size">Size</label>
         <select id="size" name="Size" required>
           <option value="" disabled selected>Select size</option>
-          <option value="45 × 30 cm">45 × 30 cm</option>
-          <option value="60 × 40 cm">60 × 40 cm</option>
-          <option value="90 × 60 cm">90 × 60 cm</option>
+          <option value="45 × 30 cm — NOK 6,000">45 × 30 cm — NOK 6,000</option>
+          <option value="60 × 40 cm — NOK 13,000">60 × 40 cm — NOK 13,000</option>
+          <option value="90 × 60 cm — NOK 20,000">90 × 60 cm — NOK 20,000</option>
         </select>
       </div>
       <div class="form-field">
@@ -488,14 +489,18 @@
       } catch (e) {}
       return null;
     }
+    const PRICES = ['NOK 6,000', 'NOK 13,000', 'NOK 20,000'];
     function renderSizes(sizes) {
       sizes = sizes.map(s => s.replace(/,/g, '.'));
-      document.querySelector('.sizes').innerHTML = sizes.map(s =>
+      document.querySelector('.sizes').innerHTML = sizes.map((s, i) =>
         '<div class="size-row"><span class="size-label">' + s +
-        '</span><span class="size-price">On enquiry</span></div>').join('');
+        '</span><span class="size-price">' + (PRICES[i] || '') + '</span></div>').join('');
       document.getElementById('size').innerHTML =
         '<option value="" disabled selected>Select size</option>' +
-        sizes.map(s => '<option value="' + s + '">' + s + '</option>').join('');
+        sizes.map((s, i) => {
+          const label = s + (PRICES[i] ? ' — ' + PRICES[i] : '');
+          return '<option value="' + label + '">' + label + '</option>';
+        }).join('');
     }
 
     // Show selected image from URL parameter or lang switch
