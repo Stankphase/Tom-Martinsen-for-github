@@ -153,6 +153,16 @@
     const buyLink = document.getElementById('buy-link');
     let current   = 0;
 
+    const _pre = {};
+    function preload(idx) {
+      const p = images[(idx + images.length) % images.length].file.split('/').map(encodeURIComponent).join('/');
+      const src = BASE + p;
+      if (_pre[src]) return;
+      const im = new Image();
+      im.src = src;
+      _pre[src] = im;
+    }
+
     function show(idx, instant = false) {
       current = (idx + images.length) % images.length;
       el.classList.remove('loaded');
@@ -160,7 +170,7 @@
       setTimeout(() => {
         const next = new Image();
         next.src = src;
-        next.onload = () => { el.src = src; el.classList.add('loaded'); };
+        next.onload = () => { el.src = src; el.classList.add('loaded'); preload(current + 1); preload(current - 1); };
         title.textContent   = images[current].title;
         counter.textContent = (current + 1) + ' — ' + images.length;
         buyLink.href = 'kjop.html?img=' + encodeURIComponent(src) + '&title=' + encodeURIComponent(images[current].title);
