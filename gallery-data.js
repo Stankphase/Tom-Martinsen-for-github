@@ -36,6 +36,7 @@ const GALLERY = {
   ],
 
   haiku: [
+    { file: '041.webp', title: 'Holmen, Nøtterøy 2001', sizes: SIZES_SQUARE },
     { file: '032.webp', title: 'Moutmarka, Verdens Ende, Tjøme 2001', sizes: SIZES_SQUARE },
     { file: '033.webp', title: 'Holmen, Nøtterøy 2001', sizes: SIZES_SQUARE },
     { file: '034.webp', title: 'Månedammen, Tønsberg 2002', sizes: SIZES_SQUARE },
@@ -45,7 +46,6 @@ const GALLERY = {
     { file: '038.webp', title: 'Månedammen, Tønsberg 2002', sizes: ['50 × 24 cm', '70 × 34 cm', '100 × 48,5 cm'] },
     { file: '039.webp', title: 'Månedammen, Tønsberg 2002', sizes: ['50 × 24,2 cm', '70 × 34 cm', '100 × 48,5 cm'] },
     { file: '040.webp', title: 'Månedammen, Tønsberg 2002', sizes: SIZES_SQUARE },
-    { file: '041.webp', title: 'Holmen, Nøtterøy 2001', sizes: SIZES_SQUARE },
     { file: '042.webp', title: 'Holmen, Nøtterøy 2001', sizes: ['50 × 28 cm', '70 × 39,3 cm', '100 × 56 cm'] },
     { file: '043.webp', title: 'Holmen, Nøtterøy 1999', sizes: SIZES_SQUARE },
     { file: '044.webp', title: 'Joshua Tree, Yosemite National Park, California, USA 1981', sizes: SIZES_SQUARE },
