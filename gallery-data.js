@@ -79,12 +79,20 @@ const GALLERY = {
   ],
 
   portretter: [
+    { file: '123.webp', title: 'Jamie Parslow 1978', sizes: SIZES_SQUARE },
+    { file: '03.webp', title: 'Christer Strømholm 1983', sizes: SIZES_SQUARE },
+    { file: '131.webp', title: 'Susanne Wilberg 1987', sizes: SIZES_SQUARE },
+    { file: '132.webp', title: 'Anne Cath. Vestly 2000', sizes: SIZES_SQUARE },
+    { file: '133.webp', title: 'Torborg Nedreaas 1974', sizes: SIZES_STD },
     { file: '01.webp', title: 'Dylan, Göteborg, 1978', sizes: ['50 × 27,5 cm', '70 × 38,5 cm', '100 × 55 cm'] },
     { file: '02.webp', title: 'Tor Obrestad, Jæren 1993', sizes: SIZES_SQUARE },
-    { file: '03.webp', title: 'Christer Strømholm 1983', sizes: SIZES_SQUARE },
+    { file: '134.webp', title: 'Erlend Loe 2002', sizes: SIZES_STD },
     { file: '04.webp', title: 'Anne Grete Preus 1998', sizes: SIZES_STD },
     { file: '05.webp', title: 'Grace Jones, Cannes, 1986', sizes: SIZES_STD },
+    { file: '145.webp', title: 'Per Petterson 2000', sizes: SIZES_STD },
+    { file: '146.webp', title: 'Jan Garbarek 2001', sizes: ['50 × 28,8 cm', '70 × 40,4 cm', '100 × 57,7 cm'] },
     { file: '06.webp', title: 'Dag Solstad 1999', sizes: SIZES_STD },
+    { file: '149.webp', title: 'Jan Erik Vold 2000', sizes: SIZES_STD },
   ],
 
 };
