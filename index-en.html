@@ -130,6 +130,12 @@
     .nav-hamburger.open span:nth-child(2) { opacity: 0; }
     .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
+    /* ── Header ved scrolling ──
+       Headeren ligger fast, men tones ut i takt med scrollingen og er helt borte
+       idet «Offisielt galleri» når toppen av vinduet (styres fra skriptet nederst). */
+    header { pointer-events: none; will-change: opacity; }  /* ikke transform: da låses mobilmenyen inne i headeren */
+    header > * { pointer-events: auto; }
+
     /* ── Hero ── */
     .hero {
       min-height: 100vh;
@@ -672,6 +678,34 @@
       hamburger.classList.remove('open');
       headerNav.classList.remove('open');
     }));
+
+    // Header: tones ut i takt med scrollingen, helt borte når «Offisielt galleri» når toppen
+    const siteHeader = document.querySelector('header');
+    const fadeMark   = document.querySelector('.hero-eyebrow');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let fadeDist = 1;
+    let ticking = false;
+    function updateHeader() {
+      ticking = false;
+      const p = Math.min(1, Math.max(0, window.scrollY / fadeDist));
+      const menuOpen = headerNav.classList.contains('open');
+      const opacity = menuOpen ? 1 : Math.pow(1 - p, 1.6);
+      siteHeader.style.opacity = opacity;
+      siteHeader.style.transform = (menuOpen || p === 0 || reduceMotion) ? '' : 'translate3d(0,' + (-12 * p).toFixed(2) + 'px,0)';
+      siteHeader.style.visibility = opacity < 0.01 ? 'hidden' : '';
+    }
+    function measureHeader() {
+      fadeDist = Math.max(1, fadeMark.getBoundingClientRect().top + window.scrollY);
+      updateHeader();
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateHeader); }
+    }, { passive: true });
+    window.addEventListener('resize', measureHeader);
+    window.addEventListener('load', measureHeader);
+    if (document.fonts) document.fonts.ready.then(measureHeader);
+    hamburger.addEventListener('click', updateHeader);
+    measureHeader();
 
     // Page transitions
     document.querySelectorAll('a[href]').forEach(a => {
