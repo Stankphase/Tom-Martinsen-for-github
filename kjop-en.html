@@ -550,7 +550,8 @@
       document.getElementById('selected-title').textContent = imgTitle || '';
       document.getElementById('selected-image').style.display = 'flex';
       document.getElementById('field-bilde').value = imgTitle || '';
-      document.getElementById('field-bilde-url').value = imgSrc;
+      // Alltid full, klikkbar adresse i bestillingsmailen (gallerisidene sender bare en filsti)
+      document.getElementById('field-bilde-url').value = new URL(imgSrc, location.href).href;
       const sizes = lookupSizes(imgSrc);
       if (sizes && sizes.length) renderSizes(sizes);
     }
