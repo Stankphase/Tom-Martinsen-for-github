@@ -96,13 +96,13 @@ const GALLERY = {
   ],
 
   folkSomLeser: [
-    { file: '104.webp', title: 'Uten tittel', sizes: SIZES_STD },
-    { file: '095.webp', title: 'Wien 1979', sizes: SIZES_STD },
-    { file: '100.webp', title: 'Cannes 1986', sizes: SIZES_STD },
-    { file: '103.webp', title: 'Oslo', sizes: SIZES_STD },
-    { file: '105.webp', title: 'Uten tittel', sizes: SIZES_STD },
-    { file: '106.webp', title: 'Oslo', sizes: SIZES_STD },
-    { file: '107.webp', title: 'Oslo', sizes: SIZES_STD },
+    { file: '104.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '095.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '100.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '103.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '105.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '106.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
+    { file: '107.webp', title: 'Fra serien "Folk som leser"', sizes: SIZES_STD },
   ],
 
 };
